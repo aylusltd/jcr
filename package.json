@@ -1,0 +1,15 @@
+{
+  "name": "jcrv",
+  "version": "1.0.0",
+  "description": "",
+  "main": "jcrv.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.5.3"
+  }
+}

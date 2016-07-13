@@ -1,0 +1,17 @@
+{
+    "ArrayTest" : [
+        {
+            "ArrStr" : "String",
+            "ArrNum" : 1,
+            "ArrBit" : true
+        }
+    ],
+    "String" : "String",
+    "Number" : 2,
+    "Boolean" : false,
+    "ObjectTest" : {
+        "ObjStr" : "String",
+        "ObjNum" : 3,
+        "ObjBit" : true
+    }
+}
