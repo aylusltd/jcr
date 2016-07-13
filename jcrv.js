@@ -6,6 +6,16 @@ function jcr(r,v,o){
     var rulesFile = r;
     var optionsFile = o;
 
+    var reservedKeyword = [
+        'String',
+        'Boolean',
+        'Number',
+        'Object',
+        'Array'
+    ];
+
+    var testObj;
+
     function preDot(str){
         if(str.indexOf('./') !== 0){
             return './' + str;
@@ -55,8 +65,26 @@ function jcr(r,v,o){
                 // Simple recursion for objects
                 jcrv(rules[key], obj[key], options);
 
+            } else if(
+                (typeof rules[key] == 'function' && obj[key].constructor.name == rules[key].name) && 
+                (!~reservedKeyword.indexOf(rules[key].name))
+            ){
+                // JCRP Match. Constructor names match, and not a reserved name.
+                testObj = new rules[key]();
+                for(k in  obj[key]){
+                    if( typeof obj[key][k] != typeof testObj[k]){
+                        console.log('Possible mismatch on testObj.' + key + '.' + obj[key][k] + '. Found ' + typeof obj[key][k] + ', but expected ' + typeof testObj[k]);
+                        console.log('Could be due to instantiation differences.');
+                    }
+                }
+
             } else {
                 // Mismatch
+                // console.log(key + ' : ' + obj[key]);
+                // console.log(obj[key].property);
+                // console.log(obj[key].constructor);
+                // console.log(obj[key].constructor.name);
+                // console.log(rules[key].name);
                 throw new Error('invalid value at ' + key);
             }
         }

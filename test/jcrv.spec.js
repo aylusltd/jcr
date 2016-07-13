@@ -5,13 +5,13 @@ var t = require('./test.json');
 describe('jcr testing suite', function() {
     it('should validate the reference file', function() {
         expect(function(){
-            jcr('test/test.jcr', 'test/test.json');
+            jcr('./test.jcr', 'test/test.json');
         }).to.not.throw(Error);
     });
 
     it('should validate the reference file against an object', function() {
         expect(function(){
-            jcr('test/test.jcr', t);
+            jcr('./test.jcr', t);
         }).to.not.throw(Error);
     });
 
@@ -22,7 +22,7 @@ describe('jcr testing suite', function() {
     });
     it('should fail with no test file', function() {
         expect(function() {
-            jcr('test/test.jcr', undefined)
+            jcr('./test.jcr', undefined)
         }).to.throw(Error);
     });
 
@@ -43,7 +43,7 @@ describe('jcr testing suite', function() {
     it('should fail with a property in the test file that\'s not defined in the rules file and allowUndefined false', function() {
         t.potato = 'test'
         expect(function() {
-            jcr('test/test.jcr', t, {
+            jcr('./test.jcr', t, {
                     allowUndefined: false
                 });
         }).to.throw(Error);
@@ -52,9 +52,27 @@ describe('jcr testing suite', function() {
     it('should pass with a property in the test file that\'s not defined in the rules file and allowUndefined true', function() {
         t.potato = 'test'
         expect(function() {
-            jcr('test/test.jcr', t, {
+            jcr('./test.jcr', t, {
                     allowUndefined: true
                 });
+        }).to.not.throw(Error);
+    });
+
+    it('should pass jcrp if valid', function() {
+        delete t.potato;
+        require('./test.jcrp');
+        t.MyConstructor = new global.MyConstructor();
+        expect(function() {
+            jcr('./test.jcrp', t);
+        }).to.not.throw(Error);
+    });
+
+    it('should pass jcrp if valid but warn of mismatched property', function() {
+        require('./test.jcrp');
+        t.MyConstructor = new global.MyConstructor();
+        t.MyConstructor.property = 2;
+        expect(function() {
+            jcr('./test.jcrp', t);
         }).to.not.throw(Error);
     });
 });
