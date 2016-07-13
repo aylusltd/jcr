@@ -78,6 +78,9 @@ function jcr(r,v,o){
                     }
                 }
 
+            } else if (options.allowCustomRules && rules[key](obj[key]) === true){
+                // custom validation function returned true
+                console.log('custom rule passed');
             } else {
                 // Mismatch
                 // console.log(key + ' : ' + obj[key]);

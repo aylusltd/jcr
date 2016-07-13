@@ -75,4 +75,17 @@ describe('jcr testing suite', function() {
             jcr('test/test.jcrp', t);
         }).to.not.throw(Error);
     });
+
+    it('should pass jcr2 if valid and allowCustomRules', function() {
+        delete t.MyConstructor;
+        expect(function() {
+            jcr('test/test.jcr2', t, {allowCustomRules : true});
+        }).to.not.throw(Error);
+    });
+
+    it('should fail jcr2 if valid and allowCustomRules false', function() {
+        expect(function() {
+            jcr('test/test.jcr2', t);
+        }).to.throw(Error);
+    });
 });

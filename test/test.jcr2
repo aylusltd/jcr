@@ -1,0 +1,17 @@
+{
+	"ArrayTest" : [
+		{
+			"ArrStr" : String,
+			"ArrNum" : Number,
+			"ArrBit" : Boolean,
+		}
+	],
+	"String" : String,
+	"Number" : function(n){return n>1},
+	"Boolean" : Boolean,
+	"ObjectTest" : {
+		"ObjStr" : String,
+		"ObjNum" : Number,
+		"ObjBit" : Boolean,
+	}
+}
