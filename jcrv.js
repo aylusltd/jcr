@@ -49,6 +49,12 @@ function jcr(r,v,o){
         options = options || {};
 
         for(var key in obj){
+
+            // only alphanumeric, dash and underscore are allowed.
+            if (key.search(/^[a-zA-Z0-9-_]+$/) === -1) {
+                throw new Error('invalid value at ' + key);
+            }
+            
             if(
                 (typeof rules[key] == 'function' && obj[key].constructor == rules[key]) || 
                 (rules[key]===undefined && options.allowUndefined)
