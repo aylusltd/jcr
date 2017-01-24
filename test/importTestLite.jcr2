@@ -1,0 +1,10 @@
+{
+    /****************
+    Name: MyConstructor
+    purpose: To do things
+    meta: Other things
+    long: This contents spans 
+            more than one line
+    ****************/
+    "MyConstructor" : i('./test/exportedConstructor')
+}

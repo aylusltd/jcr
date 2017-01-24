@@ -3,7 +3,7 @@
 	function MyConstructor(){
 		this.property = "value";
 	}
-
+	
 	g.MyConstructor = MyConstructor;
 
 	var obj = {

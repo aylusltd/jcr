@@ -1,0 +1,20 @@
+(function(){
+	var jcri = require('./jcri');
+	var MyConstructor = require('./test/exportedConstructor');
+	var ArrayTest = jcri('./test/arrayTest');
+
+	var obj = {
+		"ArrayTest" : ArrayTest,
+		"String" : String,
+		"Number" : Number,
+		"Boolean" : Boolean,
+		"ObjectTest" : {
+			"ObjStr" : String,
+			"ObjNum" : Number,
+			"ObjBit" : Boolean,
+		},
+		"MyConstructor" : MyConstructor
+	};
+	return obj;
+})();
+	

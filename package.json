@@ -4,7 +4,9 @@
   "description": "",
   "main": "jcrv.js",
   "scripts": {
-    "test": "node_modules/.bin/mocha test/jcrv.spec.js"
+    "test": "node_modules/.bin/mocha test/jcrv.spec.js",
+    "test-lite": "node_modules/.bin/mocha test/jcr2.lite.spec.js",
+    "docgen": "node jcr-docgen"
   },
   "author": "",
   "license": "ISC",

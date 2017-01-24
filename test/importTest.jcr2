@@ -1,0 +1,26 @@
+{
+	"ArrayTest" : i('./test/ArrayTest'),
+	/****************
+    Name: String
+    purpose: To do things
+    meta: Other things
+    long: This contents spans 
+            more than one line
+    ****************/
+	"String" : String,
+	"Number" : function(n){return n>1},
+	"Boolean" : Boolean,
+	"ObjectTest" : {
+		"ObjStr" : String,
+		"ObjNum" : Number,
+		"ObjBit" : Boolean,
+	},
+	/****************
+    Name: MyConstructor
+    purpose: To do things
+    meta: Other things
+    long: This contents spans 
+            more than one line
+    ****************/
+	"MyConstructor" : i('./test/exportedConstructor')
+}

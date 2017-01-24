@@ -67,6 +67,15 @@ describe('jcr testing suite', function() {
         }).to.not.throw(Error);
     });
 
+    it('should compose with imports', function() {
+        delete t.potato;
+        require('./test.jcrp');
+        t.MyConstructor = new global.MyConstructor();
+        expect(function() {
+            jcr('test/test2.jcrp', t);
+        }).to.not.throw(Error);
+    });
+
     it('should pass jcrp if valid but warn of mismatched property', function() {
         require('./test.jcrp');
         t.MyConstructor = new global.MyConstructor();
@@ -87,5 +96,34 @@ describe('jcr testing suite', function() {
         expect(function() {
             jcr('test/test.jcr2', t);
         }).to.throw(Error);
+    });
+
+    it('should pass jcr2 with imports', function() {
+        t.MyConstructor = new global.MyConstructor();
+        expect(function() {
+            jcr('test/importTest.jcr2', t, {allowCustomRules : true});
+        }).to.not.throw(Error);
+        delete t.MyConstructor;
+    });
+
+    it('should fail jcr2 with imports if allowUndefined not set (lite test)', function() {
+        expect(function() {
+            jcr('test/importTestLite.jcr2', t, {allowCustomRules : true});
+        }).to.throw(Error);
+    });
+
+    it('should fail jcr2 with imports if allowUndefined not set', function() {
+        console.log(t.MyConstructor);
+        expect(function() {
+            jcr('test/importTest.jcr2', t, {allowCustomRules : true});
+        }).to.throw(Error);
+    });
+
+    it('should fail jcr2 when a rule isn\'t met', function() {
+        t.number=1;
+        expect(function() {
+            jcr('test/importTest.jcr2', t, {allowCustomRules : true});
+        }).to.throw(Error);
+        t.number=2;
     });
 });

@@ -1,6 +1,7 @@
 #!/home/jason/.nvm/versions/node/v6.2.2/bin/node
 function jcr(r,v,o){
     var fs = require('fs');
+    var i = require('./jcri');
 
     var validationFile = v;
     var rulesFile = r;
@@ -36,7 +37,12 @@ function jcr(r,v,o){
     if(typeof r == 'object') {
         rules = r;
     } else if (typeof r == 'undefined') {
-        rules = {};
+        if(options.allowUndefined){
+            rules = {};    
+        } else {
+            throw new Error('No rules file provided');
+        }
+        
     } else {
         data = fs.readFileSync(rulesFile, 'utf8');
         data = 'rules='+data;
@@ -47,8 +53,8 @@ function jcr(r,v,o){
 
     function jcrv(rules, obj, options){
         options = options || {};
-
-        for(var key in obj){
+        var keys = Array.prototype.concat(Object.keys(rules), Object.keys(obj));
+        keys.forEach(function(key){
             if(
                 (typeof rules[key] == 'function' && obj[key].constructor == rules[key]) || 
                 (rules[key]===undefined && options.allowUndefined)
@@ -80,7 +86,12 @@ function jcr(r,v,o){
 
             } else if (options.allowCustomRules && rules[key](obj[key]) === true){
                 // custom validation function returned true
-                console.log('custom rule passed');
+                // console.log(key);
+                // console.log(rules[key]);
+                // console.log(rules[key].name);
+                // console.log(obj[key]);
+                // console.log(rules[key](obj[key]));
+                // console.log('custom rule passed');
             } else {
                 // Mismatch
                 // console.log(key + ' : ' + obj[key]);
@@ -90,7 +101,7 @@ function jcr(r,v,o){
                 // console.log(rules[key].name);
                 throw new Error('invalid value at ' + key);
             }
-        }
+        });
     }
     jcrv(rules, v, options);
     if(options.verbose){

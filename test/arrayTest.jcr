@@ -1,0 +1,7 @@
+[
+	{
+		"ArrStr" : String,
+		"ArrNum" : Number,
+		"ArrBit" : Boolean,
+	}
+]
