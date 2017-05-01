@@ -56,7 +56,7 @@ function jcr(r,v,o){
         var keys = Array.prototype.concat(Object.keys(rules), Object.keys(obj));
         keys.forEach(function(key){
             if(
-                (typeof rules[key] == 'function' && obj[key].constructor == rules[key]) || 
+                (obj[key] && typeof rules[key] == 'function' && obj[key].constructor == rules[key]) || 
                 (rules[key]===undefined && options.allowUndefined)
             ){
                 // Do nothing. This is a match.
