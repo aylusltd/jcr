@@ -56,7 +56,7 @@ function jcr(r,v,o){
         var keys = Array.prototype.concat(Object.keys(rules), Object.keys(obj));
         keys.forEach(function(key){
             if(
-                (obj[key] && typeof rules[key] == 'function' && obj[key].constructor == rules[key]) || 
+                (obj[key] !== undefined && typeof rules[key] == 'function' && obj[key].constructor == rules[key]) ||
                 (rules[key]===undefined && options.allowUndefined)
             ){
                 // Do nothing. This is a match.
@@ -72,7 +72,7 @@ function jcr(r,v,o){
                 jcrv(rules[key], obj[key], options);
 
             } else if(
-                (typeof rules[key] == 'function' && obj[key].constructor.name == rules[key].name) && 
+                (obj[key] !== undefined && typeof rules[key] == 'function' && obj[key].constructor.name == rules[key].name) &&
                 (!~reservedKeyword.indexOf(rules[key].name))
             ){
                 // JCRP Match. Constructor names match, and not a reserved name.
@@ -84,14 +84,17 @@ function jcr(r,v,o){
                     }
                 }
 
-            } else if (options.allowCustomRules && rules[key](obj[key]) === true){
+            } else if (options.allowCustomRules /*&& rules[key](obj[key]) === true*/){
                 // custom validation function returned true
-                // console.log(key);
-                // console.log(rules[key]);
-                // console.log(rules[key].name);
-                // console.log(obj[key]);
-                // console.log(rules[key](obj[key]));
-                // console.log('custom rule passed');
+                //console.log('key')
+                //console.log(key);
+                //console.log('rule')
+                //console.log(rules[key]);
+                //console.log(rules[key].name);
+                //console.log('value')
+                //console.log(obj[key]);
+                ////console.log(rules[key](obj[key]));
+                //console.log('custom rule passed');
             } else {
                 // Mismatch
                 // console.log(key + ' : ' + obj[key]);
