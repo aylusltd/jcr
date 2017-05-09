@@ -84,7 +84,7 @@ function jcr(r,v,o){
                     }
                 }
 
-            } else if (options.allowCustomRules /*&& rules[key](obj[key]) === true*/){
+            } else if (options.allowCustomRules && rules[key](obj[key]) === true){
                 // custom validation function returned true
                 //console.log('key')
                 //console.log(key);
