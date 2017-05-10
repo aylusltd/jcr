@@ -32,34 +32,36 @@ function jcr(r,v,o){
     } catch (ex) {
         options = typeof o == 'object' ? o : {};
     }
-    
+
     var rules;
     if(typeof r == 'object') {
         rules = r;
     } else if (typeof r == 'undefined') {
         if(options.allowUndefined){
-            rules = {};    
+            rules = {};
         } else {
             throw new Error('No rules file provided');
         }
-        
+
     } else {
         data = fs.readFileSync(rulesFile, 'utf8');
         data = 'rules='+data;
         eval(data);
     }
-   
+
     v = typeof v == 'object' ? v : require(preDot(validationFile));
 
     function jcrv(rules, obj, options){
         options = options || {};
         var keys = Array.prototype.concat(Object.keys(rules), Object.keys(obj));
         keys.forEach(function(key){
+            //console.log(key);
             if(
-                (obj[key] && typeof rules[key] == 'function' && obj[key].constructor == rules[key]) || 
+                (obj[key] !== undefined && typeof rules[key] == 'function' && obj[key].constructor == rules[key]) ||
                 (rules[key]===undefined && options.allowUndefined)
-            ){
+            ) {
                 // Do nothing. This is a match.
+                //console.log('match')
 
             } else if (Array.isArray(rules[key]) && Array.isArray(obj[key])){
                 // Iterative recursion for arrays
@@ -67,12 +69,13 @@ function jcr(r,v,o){
                     jcrv(rules[key][0], el, options)
                 });
 
-            } else if (rules[key].constructor == Object) {
+            } else if (rules[key].constructor == Object && obj[key] != null) {
                 // Simple recursion for objects
+                //console.log('Constructor');
                 jcrv(rules[key], obj[key], options);
 
             } else if(
-                (typeof rules[key] == 'function' && obj[key].constructor.name == rules[key].name) && 
+                (obj[key] !== undefined && typeof rules[key] == 'function' && obj[key].constructor.name == rules[key].name) &&
                 (!~reservedKeyword.indexOf(rules[key].name))
             ){
                 // JCRP Match. Constructor names match, and not a reserved name.
@@ -84,14 +87,23 @@ function jcr(r,v,o){
                     }
                 }
 
-            } else if (options.allowCustomRules && rules[key](obj[key]) === true){
+            } else if (options.allowCustomRules && typeof rules[key] == 'function' && rules[key](obj[key]) === true){
+                //console.log('Is rules Array?')
+                //console.log(Array.isArray(rules[key]))
+                //console.log('Is obj Array?')
+                //console.log(Array.isArray(obj[key]))
+                //console.log(obj[key]);
+                //console.log('CUSTOM RULES!');
                 // custom validation function returned true
-                // console.log(key);
-                // console.log(rules[key]);
-                // console.log(rules[key].name);
-                // console.log(obj[key]);
-                // console.log(rules[key](obj[key]));
-                // console.log('custom rule passed');
+                //console.log('key')
+                //console.log(key);
+                //console.log('rule')
+                //console.log(rules[key]);
+                //console.log(rules[key].name);
+                //console.log('value')
+                //console.log(obj[key]);
+                ////console.log(rules[key](obj[key]));
+                //console.log('custom rule passed');
             } else {
                 // Mismatch
                 // console.log(key + ' : ' + obj[key]);
@@ -99,7 +111,9 @@ function jcr(r,v,o){
                 // console.log(obj[key].constructor);
                 // console.log(obj[key].constructor.name);
                 // console.log(rules[key].name);
-                throw new Error('invalid value at ' + key);
+                console.log('invalid value at ' + key)
+                throw new Error('expected ' + rules[key] + ' received ' + obj[key]);
+
             }
         });
     }
@@ -115,5 +129,5 @@ var v = args[0];
 var r = args[1];
 var o = args[2];
 if(process.argv[1] == __filename){
-    jcr(r,v,{verbose:true});    
+    jcr(r,v,{verbose:true});
 }
